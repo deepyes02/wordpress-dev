@@ -1,0 +1,9 @@
+// Place your settings in this file to overwrite the default settings
+{
+      // PHPCS
+      "phpcs.enable": true,
+      "phpcs.standard": "WordPress",
+      "phpcs.executablePath": "./vendor/bin/phpcs",
+      "phpcs.showWarnings": true,
+      "phpcs.composerJsonPath": "composer.json",
+  }

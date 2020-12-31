@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Database myql
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 736852
+      MYSQL_DATABASE: codewing_db
+      MYSQL_USER: deepyes02
+      MYSQL_PASSWORD: 736852
+    networks:
+      - wpsite
+
+  # phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: 736852
+      FILE_UPLOADS: on,
+      memory_limit: 500M,
+      upload_max_filesize: 500M,
+      post_max_size: 500M,
+      max_execution_time: 600
+    volumes:
+        - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    networks:
+      - wpsite
+
+  #wordpress
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - '8000:80'
+    restart: always
+    volumes: ['./:/var/www/html']
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: deepyes02
+      WORDPRESS_DB_PASSWORD: 736852
+    networks:
+      - wpsite
+networks:
+  wpsite:
+volumes:
+  db_data:
